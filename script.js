@@ -4,10 +4,27 @@ $(function(){
     api.addClass(new PhSc.Class({
         name : "Phalcon\\Mvc\\RouterInterface"
     }));
-    
     api.addClass(new PhSc.Class({
-        name : "Phalcon\\Mvc\\Application"
+        name : "Phalcon\\DiInterface"
     }));
+    api.addClass(new PhSc.Class({
+        name : "Phalcon\\Events\\ManagerInterface"
+    }));
+    
+    var application = new PhSc.Class({
+        name : "Phalcon\\Mvc\\Application"
+    });
+    application.addMethod(new PhSc.Method({
+        name : "setDI"
+    }));
+    application.addMethod(new PhSc.Method({
+        name : "setEventsManager"
+    }));
+    
+    api.addClass(application);
+    
+    
+    
     
     var process = new PhSc.Process({
         "baseClass" : "Phalcon\\Mvc\\Application",
@@ -16,38 +33,20 @@ $(function(){
             
             new PhSc.Step({
                 "type" : "basic",
-                "title": "Recuperation @class|Phalcon\\Mvc\\RouterInterface(Router cool) dans le @class|DI",
-                "description" : "It will search the router directly into the DI. The router has been register to the key ``router``"
+                "title": "Get the @see:Phalcon\\DiInterface(Di)",
+                "description" : "Get the @see:Phalcon\\DiInterface(Di) that was @see:Phalcon\\Mvc\\Application::setDI(set) before handling "
             }),
-            
+            new PhSc.Step({
+                "type" : "basic",
+                "title": "Get the @see:Phalcon\\Events\\ManagerInterface(EventManager)",
+                "description" : "Get the @see:Phalcon\\Events\\ManagerInterface that was @see:Phalcon\\Mvc\\Application::setEventsManager(set) before handling "
+            }),
             new PhSc.Step({
                 "type" : "event",
-                "title": "recuperation @class|Phalcon\\Mvc\\RouterInterface Router dans le DI",
-                "description" : "It will search the router directly into the DI. The router has been register to the key ``router``"
-            }),
-            
-            new PhSc.Step({
-                "type" : "event",
-                "title": "Blabla ``router``",
-                "description" : "It will search the router directly into the DI. The router has been register to the key ``router``",
-                
-                subProcess : new PhSc.Process({
-                    "baseClass" : "Phalcon\\Mvc\\Application",
-                    "method"    : "handle",
-                    "steps"     : [
-
-                        new PhSc.Step({
-                            "type" : "basic",
-                            "title": "Recuperation @class|Phalcon\\Mvc\\RouterInterface(Router cool) dans le @class|DI",
-                            "description" : "It will search the router directly into the DI. The router has been register to the key ``router``"
-                        }),
-                    ]
-
-                  
-
-                 
-                })
-            }),
+                "title": "application:boot",
+                "description" : "Fire the event application:boot"
+            })
+          
             
             
         ]

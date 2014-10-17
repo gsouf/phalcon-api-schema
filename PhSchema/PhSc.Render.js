@@ -49,6 +49,13 @@ PhSc.Render = (function($,PhSc){
                 $step.append(this.renderProcess(step.subProcess));
             }
             
+            if(step.description){
+                var $description = $("<div>");
+                $description.addClass(PhSc.makeClass("step-description"));
+                $description.html(this.renderText(step.description));
+                $step.append($description);
+            }
+            
             return $step;
 
         },
